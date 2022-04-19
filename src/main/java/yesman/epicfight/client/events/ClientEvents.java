@@ -78,7 +78,7 @@ public class ClientEvents {
 		} else if (event.getKeyCode() >= 49 && event.getKeyCode() <= 57) {
 			if (event.getGui() instanceof ContainerScreen) {
 				Slot slotUnderMouse = ((ContainerScreen<?>)event.getGui()).getSlotUnderMouse();
-				if (slotUnderMouse.getBackground() != null && slotUnderMouse.getBackground().equals(OFFHAND_TEXTURE)) {
+				if (slotUnderMouse != null && slotUnderMouse.getBackground() != null && slotUnderMouse.getBackground().equals(OFFHAND_TEXTURE)) {
 					itemCapability = ModCapabilities.getItemStackCapability(Minecraft.getInstance().player.inventory.getStackInSlot(event.getKeyCode() - 49));
 					if (!itemCapability.canUsedInOffhand()) {
 						event.setCanceled(true);

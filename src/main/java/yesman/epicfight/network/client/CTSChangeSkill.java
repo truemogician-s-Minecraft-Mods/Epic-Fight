@@ -47,12 +47,12 @@ public class CTSChangeSkill {
 				playerdata.getSkillCapability().addLearnedSkills(skill);
 			}
 			
-			if (!serverPlayer.isCreative()) {
-				serverPlayer.inventory.removeStackFromSlot(serverPlayer.inventory.currentItem);
-			}
-			
 			if (msg.consumeXp) {
 				serverPlayer.addExperienceLevel(-skill.getRequiredXp());
+			} else {
+				if (!serverPlayer.isCreative()) {
+					serverPlayer.inventory.removeStackFromSlot(serverPlayer.inventory.currentItem);
+				}
 			}
 		});
 		ctx.get().setPacketHandled(true);

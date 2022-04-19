@@ -30,7 +30,7 @@ public class Pose {
 	public static Pose interpolatePose(Pose pose1, Pose pose2, float pregression) {
 		Pose pose = new Pose();
 		for (String jointName : pose1.jointTransformData.keySet()) {
-			if (pose2.jointTransformData.containsKey(jointName)) { 
+			if (pose2.jointTransformData.containsKey(jointName)) {
 				pose.putJointData(jointName, JointTransform.interpolate(pose1.jointTransformData.get(jointName), pose2.jointTransformData.get(jointName), pregression));
 			}
 		}

@@ -1,10 +1,12 @@
 package yesman.epicfight.entity.eventlistener;
 
+import java.util.Map;
 import java.util.UUID;
 
 import com.google.common.base.Function;
-import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
+import com.google.common.collect.TreeMultimap;
 
 import net.minecraftforge.fml.LogicalSide;
 import yesman.epicfight.capabilities.entity.player.PlayerData;
@@ -12,31 +14,56 @@ import yesman.epicfight.capabilities.entity.player.ServerPlayerData;
 import yesman.epicfight.client.capabilites.player.ClientPlayerData;
 
 public class PlayerEventListener {
-	private Multimap<EventType<? extends PlayerEvent<?>>, EventTrigger<? extends PlayerEvent<?>>> events;
+	private Map<EventType<? extends PlayerEvent<?>>, TreeMultimap<Integer, EventTrigger<? extends PlayerEvent<?>>>> events;
 	private PlayerData<?> player;
 
 	public PlayerEventListener(PlayerData<?> player) {
 		this.player = player;
-		this.events = HashMultimap.create();
+		this.events = Maps.newHashMap();
 	}
 
 	public <T extends PlayerEvent<?>> void addEventListener(EventType<T> eventType, UUID uuid, Function<T, Boolean> function) {
+		this.addEventListener(eventType, uuid, function, -1);
+	}
+	
+	public <T extends PlayerEvent<?>> void addEventListener(EventType<T> eventType, UUID uuid, Function<T, Boolean> function, int priority) {
 		if (eventType.shouldActive(this.player.isRemote())) {
-			this.removeListener(eventType, uuid);
-			this.events.put(eventType, EventTrigger.makeEvent(eventType, uuid, function));
+			if (!this.events.containsKey(eventType)) {
+				this.events.put(eventType, TreeMultimap.create());
+			}
+			
+			priority = Math.max(priority, -1);
+			this.removeListener(eventType, uuid, priority);
+			TreeMultimap<Integer, EventTrigger<? extends PlayerEvent<?>>> map = this.events.get(eventType);
+			map.put(priority, EventTrigger.makeEvent(uuid, function, priority));
 		}
 	}
 	
 	public <T extends PlayerEvent<?>> void removeListener(EventType<T> eventType, UUID uuid) {
-		this.events.get(eventType).removeIf((trigger) -> trigger.compareTo(uuid) == 0);
+		this.removeListener(eventType, uuid, -1);
 	}
-
+	
+	public <T extends PlayerEvent<?>> void removeListener(EventType<T> eventType, UUID uuid, int priority) {
+		Multimap<Integer, EventTrigger<? extends PlayerEvent<?>>> map = this.events.get(eventType);
+		if (map != null) {
+			priority = Math.max(priority, -1);
+			map.get(priority).removeIf((trigger) -> trigger.is(uuid));
+		}
+	}
+	
 	@SuppressWarnings("unchecked")
 	public <T extends PlayerEvent<?>> boolean activateEvents(EventType<T> eventType, T event) {
 		boolean cancel = false;
-		for (EventTrigger<?> eventTrigger : this.events.get(eventType)) {
-			if (eventType.shouldActive(this.player.isRemote())) {
-				cancel |= ((EventTrigger<T>) eventTrigger).trigger(event);
+		TreeMultimap<Integer, EventTrigger<? extends PlayerEvent<?>>> map = this.events.get(eventType);
+		if (map != null) {
+			for (int i : map.keySet().descendingSet()) {
+				if (!cancel || i == -1) {
+					for (EventTrigger<?> eventTrigger : map.get(i)) {
+						if (eventType.shouldActive(this.player.isRemote())) {
+							cancel |= ((EventTrigger<T>)eventTrigger).trigger(event);
+						}
+					}
+				}
 			}
 		}
 		return cancel;

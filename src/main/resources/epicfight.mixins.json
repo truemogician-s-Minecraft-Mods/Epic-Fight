@@ -4,7 +4,8 @@
 	"package": "yesman.epicfight.mixin",
 	"mixins": [
 		"MixinItemStack",
-		"MixinPacketBuffer"
+		"MixinPacketBuffer",
+		"MixinSSetSlotPacket"
 	],
 	"injector": {
 		"defaultRequire": 1

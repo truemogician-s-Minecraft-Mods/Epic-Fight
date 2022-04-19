@@ -1,6 +1,7 @@
 package yesman.epicfight.capabilities.item;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -124,7 +125,7 @@ public class ItemCapabilityListener extends JsonReloadListener {
 				for (String key : attributes.keySet()) {
 					Map<Attribute, AttributeModifier> attributeEntry = deserializeAttribute(attributes.getCompound(key));
 					for (Map.Entry<Attribute, AttributeModifier> attribute : attributeEntry.entrySet()) {
-						innerDefaultCapability.addStyleAttibute(CapabilityItem.Style.valueOf(key.toUpperCase()), Pair.of(attribute.getKey(), attribute.getValue()));
+						innerDefaultCapability.addStyleAttibute(CapabilityItem.Style.valueOf(key.toUpperCase(Locale.ROOT)), Pair.of(attribute.getKey(), attribute.getValue()));
 					}
 				}
 			}
@@ -138,7 +139,7 @@ public class ItemCapabilityListener extends JsonReloadListener {
 				for (String key : attributes.keySet()) {
 					Map<Attribute, AttributeModifier> attributeEntry = deserializeAttribute(attributes.getCompound(key));
 					for (Map.Entry<Attribute, AttributeModifier> attribute : attributeEntry.entrySet()) {
-						capability.addStyleAttibute(CapabilityItem.Style.valueOf(key.toUpperCase()), Pair.of(attribute.getKey(), attribute.getValue()));
+						capability.addStyleAttibute(CapabilityItem.Style.valueOf(key.toUpperCase(Locale.ROOT)), Pair.of(attribute.getKey(), attribute.getValue()));
 					}
 				}
 			}
@@ -209,15 +210,15 @@ public class ItemCapabilityListener extends JsonReloadListener {
 			for (CompoundNBT tag : packet.getTags()) {
 				Item item = Item.getItemById(tag.getInt("id"));
 				CAPABILITY_ARMOR_DATA_MAP.put(item, tag);
-				armorReceived = true;
 			}
+			armorReceived = true;
 			break;
 		case WEAPON:
 			for (CompoundNBT tag : packet.getTags()) {
 				Item item = Item.getItemById(tag.getInt("id"));
 				CAPABILITY_WEAPON_DATA_MAP.put(item, tag);
-				weaponReceived = true;
 			}
+			weaponReceived = true;
 			break;
 		}
 		

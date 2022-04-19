@@ -218,9 +218,13 @@ public abstract class Skill {
 	public void setConsumptionSynchronize(ServerPlayerData executer, float amount) {
 		setConsumptionSynchronize(executer, this.category, amount);
 	}
-
+	
 	public void setDurationSynchronize(ServerPlayerData executer, int amount) {
 		setDurationSynchronize(executer, this.category, amount);
+	}
+	
+	public void setMaxDurationSynchronize(ServerPlayerData executer, int amount) {
+		setMaxDurationSynchronize(executer, this.category, amount);
 	}
 	
 	public void setStackSynchronize(ServerPlayerData executer, int amount) {
@@ -235,6 +239,11 @@ public abstract class Skill {
 	public static void setDurationSynchronize(ServerPlayerData executer, SkillCategory slot, int amount) {
 		executer.getSkill(slot).setDuration(amount);
 		ModNetworkManager.sendToPlayer(new STCSetSkillValue(Target.DURATION, slot.getIndex(), amount, false), executer.getOriginalEntity());
+	}
+	
+	public static void setMaxDurationSynchronize(ServerPlayerData executer, SkillCategory slot, int amount) {
+		executer.getSkill(slot).setMaxDuration(amount);
+		ModNetworkManager.sendToPlayer(new STCSetSkillValue(Target.MAX_DURATION, slot.getIndex(), amount, false), executer.getOriginalEntity());
 	}
 	
 	public static void setStackSynchronize(ServerPlayerData executer, SkillCategory slot, int amount) {

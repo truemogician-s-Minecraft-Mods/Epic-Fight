@@ -33,7 +33,6 @@ public class SkillContainer {
 	public SkillContainer setSkill(Skill skill) {
 		if (this.containingSkill != null) {
 			this.containingSkill.onRemoved(this);
-			System.out.println("remove " + this.containingSkill + " and " + skill);
 		}
 		this.containingSkill = skill;
 		this.resetValues();
@@ -74,6 +73,10 @@ public class SkillContainer {
 			this.prevResource = 0;
 			this.resource = 0;
 		}
+	}
+	
+	public void setMaxDuration(int value) {
+		this.maxDuration = Math.max(value, 0);
 	}
 	
 	public void setDuration(int value) {

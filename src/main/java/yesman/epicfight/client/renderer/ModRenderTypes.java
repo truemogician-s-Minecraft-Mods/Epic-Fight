@@ -12,8 +12,11 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import yesman.epicfight.main.EpicFightMod;
 
+@OnlyIn(Dist.CLIENT)
 public class ModRenderTypes extends RenderType {
 	private static final RenderType ARMOR_ENTITY_GLINT = makeType(EpicFightMod.MODID + ":armor_entity_glint", DefaultVertexFormats.POSITION_TEX, GL11.GL_TRIANGLES, 256,
 			RenderType.State.getBuilder()
@@ -136,7 +139,6 @@ public class ModRenderTypes extends RenderType {
 	}
 	
 	public static IVertexBuilder getArmorVertexBuilder(IRenderTypeBuffer buffer, RenderType renderType, boolean withGlint) {
-		return withGlint ? VertexBuilderUtils.newDelegate(buffer.getBuffer(getEnchantedArmor()), buffer.getBuffer(renderType))
-				: buffer.getBuffer(renderType);
+		return withGlint ? VertexBuilderUtils.newDelegate(buffer.getBuffer(getEnchantedArmor()), buffer.getBuffer(renderType)) : buffer.getBuffer(renderType);
 	}
 }

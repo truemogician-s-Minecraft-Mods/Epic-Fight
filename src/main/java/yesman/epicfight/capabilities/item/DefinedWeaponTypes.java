@@ -3,6 +3,7 @@ package yesman.epicfight.capabilities.item;
 import java.util.Map;
 import java.util.function.Function;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.mojang.datafixers.util.Pair;
 
@@ -307,5 +308,9 @@ public class DefinedWeaponTypes {
 	
 	public static Function<Item, CapabilityItem> get(String typeName) {
 		return TYPES.get(typeName);
+	}
+	
+	public static ImmutableMap<String, Function<Item, CapabilityItem>> getTypes() {
+	    return ImmutableMap.copyOf(TYPES);
 	}
 }

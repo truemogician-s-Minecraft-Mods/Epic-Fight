@@ -130,7 +130,7 @@ public class GuardSkill extends Skill {
 				}
 			}
 			return false;
-		});
+		}, 1);
 	}
 	
 	public boolean guard(SkillContainer container, CapabilityItem itemCapability, HitEvent event, float knockback, float impact, boolean reinforced) {

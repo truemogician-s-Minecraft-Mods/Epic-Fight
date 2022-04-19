@@ -125,8 +125,7 @@ public class VertexData {
 		float[] jointWeightList = ArrayUtils.toPrimitive(jointWeights.toArray(new Float[0]));
 		int[] jointCountList = ArrayUtils.toPrimitive(effectJointCount.toArray(new Integer[0]));
 		
-		return new Mesh(positionList, normalList, texCoordList, jointIndexList, jointWeightList, indices, jointCountList,
-				positionList.length / 3, indices.length);
+		return new Mesh(positionList, normalList, texCoordList, jointIndexList, jointWeightList, indices, jointCountList, positionList.length / 3, indices.length);
 	}
 
 	public enum State {

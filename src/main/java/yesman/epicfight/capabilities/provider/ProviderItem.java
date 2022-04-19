@@ -39,7 +39,8 @@ import yesman.epicfight.main.EpicFightMod;
 public class ProviderItem implements ICapabilityProvider, NonNullSupplier<CapabilityItem> {
 	private static final Map<Class<? extends Item>, Function<Item, CapabilityItem>> CAPABILITY_BY_CLASS = new HashMap<Class<? extends Item>, Function<Item, CapabilityItem>> ();
 	private static final Map<Item, CapabilityItem> CAPABILITIES = new HashMap<Item, CapabilityItem> ();
-	private static boolean isInitialized;
+	private static boolean isDatapackInitialized;
+	private static boolean streamOpened;
 	private static List<ProviderItem> deferredProviders = Lists.newArrayList();
 	
 	public static void registerWeaponClass() {
@@ -63,11 +64,23 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<Capabi
 	}
 	
 	public static boolean initialized() {
-		return isInitialized;
+		return isDatapackInitialized || !EpicFightMod.isPhysicalClient();
+	}
+	
+	public static void open() {
+		streamOpened = true;
+	}
+	
+	public static void close() {
+		streamOpened = false;
+	}
+	
+	public static boolean isStreamOpened() {
+		return streamOpened;
 	}
 	
 	public static void clear() {
-		isInitialized = false;
+		isDatapackInitialized = false;
 		CAPABILITIES.clear();
 	}
 	
@@ -78,12 +91,11 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<Capabi
 			if (capability instanceof NBTSeparativeCapability) {
 				capability = capability.getFinal(itemstack);
 			}
-			
 			provider.capability = capability;
 		});
 		
 		deferredProviders.clear();
-		isInitialized = true;
+		isDatapackInitialized = true;
 	}
 	
 	public static void addDefaultItems() {
@@ -155,7 +167,7 @@ public class ProviderItem implements ICapabilityProvider, NonNullSupplier<Capabi
 	public boolean hasCapability() {
 		return this.capability != null;
 	}
-
+	
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
 		return cap == ModCapabilities.CAPABILITY_ITEM ? this.optional.cast() : LazyOptional.empty();

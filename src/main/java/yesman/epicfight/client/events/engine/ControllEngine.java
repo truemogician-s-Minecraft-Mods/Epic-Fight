@@ -302,7 +302,7 @@ public class ControllEngine {
 			if (Minecraft.getInstance().player != null && Minecraft.getInstance().currentScreen == null) {
 				Input input = InputMappings.Type.KEYSYM.getOrMakeInput(event.getKey());
 				for (KeyBinding keybinding : controllEngine.keyHash.lookupAll(input)) {
-					if(controllEngine.keyFunctionMap.containsKey(keybinding)) {
+					if (controllEngine.keyFunctionMap.containsKey(keybinding)) {
 						controllEngine.keyFunctionMap.get(keybinding).accept(event.getKey(), event.getAction());
 					}
 				}

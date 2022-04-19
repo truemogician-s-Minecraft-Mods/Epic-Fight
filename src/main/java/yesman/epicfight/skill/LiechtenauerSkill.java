@@ -32,7 +32,10 @@ public class LiechtenauerSkill extends SpecialAttackSkill {
 	
 	@Override
 	public void onInitiate(SkillContainer container) {
-		container.maxDuration = this.maxDuration + EnchantmentHelper.getMaxEnchantmentLevel(Enchantments.SWEEPING, container.executer.getOriginalEntity());
+		if (!container.executer.isRemote()) {
+			this.setMaxDurationSynchronize((ServerPlayerData)container.executer, this.maxDuration + EnchantmentHelper.getMaxEnchantmentLevel(Enchantments.SWEEPING, container.executer.getOriginalEntity()));
+		}
+		
 		container.executer.getEventListener().addEventListener(EventType.DEALT_DAMAGE_POST_EVENT, EVENT_UUID, (event) -> {
 			if (container.isActivated()) {
 				if (!event.getTarget().isAlive()) {
@@ -81,7 +84,7 @@ public class LiechtenauerSkill extends SpecialAttackSkill {
 			}
 			
 			return false;
-		});
+		}, 0);
 		
 		container.executer.getEventListener().addEventListener(EventType.MOVEMENT_INPUT_EVENT, EVENT_UUID, (event) -> {
 			if (event.getPlayerData().getSkill(this.category).isActivated()) {

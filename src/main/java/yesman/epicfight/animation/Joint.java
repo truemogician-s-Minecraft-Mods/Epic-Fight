@@ -69,18 +69,16 @@ public class Joint {
 		return this.jointId;
 	}
 	/**
-	public void showInfo()
-	{
+	public void showInfo() {
 		System.out.println("id = " + this.jointId);
 		System.out.println("name = " + this.jointName);
+		System.out.println("local = " + this.localTransform);
 		System.out.print("children = ");
-		for(Joint joint : subJoints)
-		{
+		for (Joint joint : subJoints) {
 			System.out.print(joint.jointName + " ");
 		}
 		System.out.println();
-		for(Joint joint : subJoints)
-		{
+		for (Joint joint : subJoints) {
 			joint.showInfo();
 		}
 	}**/

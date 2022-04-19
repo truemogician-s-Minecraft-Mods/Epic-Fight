@@ -116,9 +116,10 @@ public class AttackAnimation extends ActionAnimation {
 						Entity e = attackResult.getEntity();
 						LivingEntity trueEntity = this.getTrueEntity(e);
 						if (!entitydata.currentlyAttackedEntity.contains(trueEntity) && !entitydata.canAttack(e)) {
-							if (e instanceof LivingEntity || e instanceof PartEntity) {
-								if (entity.world.rayTraceBlocks(new RayTraceContext(new Vector3d(e.getPosX(), e.getPosY() + (double)e.getEyeHeight(), e.getPosZ()),
-										new Vector3d(entity.getPosX(), entity.getPosY() + entity.getHeight() * 0.5F, entity.getPosZ()), 
+							if (e instanceof LivingEntity) {
+								if (entity.world.rayTraceBlocks(new RayTraceContext(
+										new Vector3d(e.getPosX(), e.getPosY() + (double)e.getEyeHeight(), e.getPosZ()),
+										new Vector3d(entity.getPosX(), entity.getPosY() + entity.getHeight() * 0.5F, entity.getPosZ()),
 										RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, entity)).getType() == RayTraceResult.Type.MISS) {
 									IExtendedDamageSource source = this.getDamageSourceExt(entitydata, e, phase);
 									float damage = this.getDamageTo(entitydata, trueEntity, phase, source);

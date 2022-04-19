@@ -20,6 +20,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import yesman.epicfight.animation.types.ActionAnimation;
 import yesman.epicfight.animation.types.AimAnimation;
 import yesman.epicfight.client.animation.Layer.Priority;
@@ -35,6 +37,7 @@ import yesman.epicfight.model.Armature;
 import yesman.epicfight.utils.math.OpenMatrix4f;
 import yesman.epicfight.utils.math.Vec4f;
 
+@OnlyIn(Dist.CLIENT)
 public class FirstPersonRenderer extends ArmatureRenderer<ClientPlayerEntity, ClientPlayerData, PlayerModel<ClientPlayerEntity>> {
 	public FirstPersonRenderer() {
 		super();

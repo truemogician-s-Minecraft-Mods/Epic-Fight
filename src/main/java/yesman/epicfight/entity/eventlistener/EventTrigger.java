@@ -4,15 +4,15 @@ import java.util.UUID;
 
 import com.google.common.base.Function;
 
-import yesman.epicfight.entity.eventlistener.PlayerEventListener.EventType;
-
-public class EventTrigger<T extends PlayerEvent<?>> implements Comparable<UUID> {
+public class EventTrigger<T extends PlayerEvent<?>> implements Comparable<EventTrigger<?>> {
 	private UUID uuid;
 	private Function<T, Boolean> function;
-
-	public EventTrigger(UUID uuid, Function<T, Boolean> function) {
+	private final int priority;
+	
+	public EventTrigger(UUID uuid, Function<T, Boolean> function, int priority) {
 		this.uuid = uuid;
 		this.function = function;
+		this.priority = priority;
 	}
 	
 	public boolean is(UUID uuid) {
@@ -23,16 +23,20 @@ public class EventTrigger<T extends PlayerEvent<?>> implements Comparable<UUID> 
 		return this.function.apply(args);
 	}
 	
+	public int getPriority() {
+		return this.priority;
+	}
+	
 	@Override
-	public int compareTo(UUID o) {
-		if(o.equals(this.uuid)) {
+	public int compareTo(EventTrigger<?> o) {
+		if (this.uuid == o.uuid) {
 			return 0;
 		} else {
-			return -1;
+			return this.priority > o.priority ? 1 : -1;
 		}
 	}
 	
-	public static <T extends PlayerEvent<?>> EventTrigger<T> makeEvent(EventType<T> type, UUID uuid, Function<T, Boolean> function) {
-		return new EventTrigger<T>(uuid, function);
+	public static <T extends PlayerEvent<?>> EventTrigger<T> makeEvent(UUID uuid, Function<T, Boolean> function, int priority) {
+		return new EventTrigger<T>(uuid, function, priority);
 	}
 }

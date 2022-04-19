@@ -9,7 +9,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
-import yesman.epicfight.capabilities.provider.ProviderItem;
 
 @Mixin(value = PacketBuffer.class)
 public abstract class MixinPacketBuffer {
@@ -23,11 +22,14 @@ public abstract class MixinPacketBuffer {
 			int i = pb.readVarInt();
 			int j = pb.readByte();
 			Item item = Item.getItemById(i);
-			ItemStack itemstack = new ItemStack(item, j);
-			itemstack.readShareTag(pb.readCompoundTag());
-			if (ProviderItem.has(item)) {
-				itemstack = ItemStack.read(itemstack.write(new CompoundNBT()));
+			CompoundNBT constructTag = new CompoundNBT();
+			CompoundNBT customTag = pb.readCompoundTag();
+			if (customTag != null) {
+				constructTag.put("tag", customTag);
 			}
+			constructTag.putInt("Count", j);
+			constructTag.putString("id", item.getRegistryName().toString());
+			ItemStack itemstack = ItemStack.read(constructTag);
 			info.setReturnValue(itemstack);
 		}
 	}

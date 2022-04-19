@@ -45,7 +45,7 @@ public class JointTransform {
 		return this.rotation;
 	}
 	
-	public void set(JointTransform jt) {
+	public JointTransform set(JointTransform jt) {
 		Vec3f newV = jt.getPosition();
 		Quaternion newQ = jt.getRotation();
 		Vec3f newS = jt.scale;
@@ -55,6 +55,8 @@ public class JointTransform {
 		jt.transformEntries.forEach((transformEntry) -> {
 			this.transformEntries.add(new TransformEntry(transformEntry.transformName, transformEntry.multiplyFunction, transformEntry.transform));
 		});
+		
+		return this;
 	}
 	
 	public void push(String name, MultiplyFunction mulFucntion, JointTransform transform) {
