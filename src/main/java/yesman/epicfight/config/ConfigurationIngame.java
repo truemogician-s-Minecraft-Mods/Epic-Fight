@@ -28,6 +28,7 @@ public class ConfigurationIngame {
 	public final List<Item> battleAutoSwitchItems;
 	public final List<Item> miningAutoSwitchItems;
 	public int aimHelperRealColor;
+	public final Option<Boolean> showBetaWarning;
 	
 	public final Option<Integer> staminaBarX;
 	public final Option<Integer> staminaBarY;
@@ -62,6 +63,7 @@ public class ConfigurationIngame {
 		this.cameraAutoSwitch = new Option<Boolean>(config.cameraAutoSwitch.get());
 		this.autoPreparation = new Option<Boolean>(config.autoPreparation.get());
 		this.offBloodEffects = new Option<Boolean>(config.offBloodEffects.get());
+		this.showBetaWarning = new Option<>(config.showBetaWarning.get());
 		this.battleAutoSwitchItems = Lists.newArrayList(config.battleAutoSwitchItems.get().stream().map((itemName) ->
 			ForgeRegistries.ITEMS.getValue(new ResourceLocation(itemName))).iterator()
 		);

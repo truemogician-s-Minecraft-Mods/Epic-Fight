@@ -645,7 +645,7 @@ public class RenderEngine {
 				renderEngine.aimHelper.doRender(event.getPoseStack(), event.getPartialTick());
 			}
 			
-			if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_WEATHER) {
+			if (EpicFightMod.CLIENT_INGAME_CONFIG.showBetaWarning.getValue() && event.getStage() == RenderLevelStageEvent.Stage.AFTER_WEATHER) {
 				renderEngine.betaWarningMessage.drawMessage(event.getPoseStack());
 			}
 		}

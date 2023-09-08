@@ -21,6 +21,7 @@ public class ClientConfig {
 	public final BooleanValue cameraAutoSwitch;
 	public final BooleanValue autoPreparation;
 	public final BooleanValue offBloodEffects;
+	public final BooleanValue showBetaWarning;
 	public final ConfigValue<List<? extends String>> battleAutoSwitchItems;
 	public final ConfigValue<List<? extends String>> miningAutoSwitchItems;
 	
@@ -58,6 +59,7 @@ public class ClientConfig {
 		this.cameraAutoSwitch = config.define("ingame.camera_auto_switch", () -> false);
 		this.autoPreparation = config.define("ingame.auto_preparation", () -> false);
 		this.offBloodEffects = config.define("ingame.off_gore", () -> false);
+		this.showBetaWarning = config.define("ingame.show_beta_warning", () -> true);
 		
 		this.battleAutoSwitchItems = config.defineList("ingame.battle_autoswitch_items", Lists.newArrayList(), (element) -> {
 			if (element instanceof String str) {
